@@ -37,39 +37,41 @@ game.on('try', async () => {
     const answer = await rl.question('Quelle est le juste prix ?');
     if (!Number.isNaN(answer)) {
         if (parseInt(answer) === price) {
-          return console.log(`Bravo, le prix était ${price} !`)
+          console.log(`Bravo, le prix était ${price} !`)
           resetGame(); 
+          return main();
         }
         tryCount++;
-        return console.log(`C'est pas bon, il te reste ${10 - tryCount} essais`);
-        if (tryCount === 10) {
-            return console.log(
+        answer > price ? console.log(`Plus petit, il te reste ${10 - tryCount} essais`) : console.log(`Plus grand, il te reste ${10 - tryCount} essais`);
+        if (tryCount > 10) {
+            console.log(
             `Dom-H, le prix était ${price} ! Tu feras mieux la prochaine fois ;-(`
             );
+          resetGame();
         }
+      return main();
     }
-    return console.log("Ce n'est pas un prix mais un mot D:");
+    console.log("Ce n'est pas un prix mais un mot D:");
+    return main();
     
 })
 
 async function main() {
-        while(true) {
-          const opt = await rl.question('1-Quitter le jeu \n -2 Recommencer la partie \n -3 Commencer une partie')
-          switch(opt) {
-              case "1":
-                  game.emit('exit');
-                  break;
-              case "2":
-                  game.emit('retry');
-                  break;
-              case "3":
-                  game.emit('try');
-                  break;
-              default:
-                  console.log('Option invalide');
-                  break;
-          }
-       }
+        const opt = await rl.question('1-Quitter le jeu \n -2 Recommencer la partie \n -3 Commencer une partie\n')
+        switch(opt) {
+            case "1":
+                game.emit('exit');
+                break;
+            case "2":
+                game.emit('retry');
+                break;
+            case "3":
+                game.emit('try');
+                break;
+            default:
+                console.log('Option invalide');
+                break;
+     }
 }
  
 main();

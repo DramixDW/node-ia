@@ -20,3 +20,9 @@ fsPromises.readFile('./exercice-dir.js', 'utf-8').then((file) => {
 
 fs.writeFileSync('testEcriture.txt', 'test');
 fs.appendFileSync('testEcriture.txt', '\n C\'est l\'heure de la pause :');
+
+function spreadArgs(...args) {
+    console.log(args)
+}
+
+spreadArgs(3, 4, 5, 34, 45, 23, 453);
