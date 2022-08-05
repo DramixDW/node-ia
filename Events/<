@@ -32,23 +32,24 @@ game.on('retry', () => {
     resetGame();
 })
 
-game.on('try', async () => {
+game.on('try', () => {
     playing = true;
-    const answer = await rl.question('Quelle est le juste prix ?');
-    if (!Number.isNaN(answer)) {
-        if (parseInt(answer) === price) {
-          return console.log(`Bravo, le prix était ${price} !`)
-          resetGame(); 
+    rl.question('Quelle est le juste prix ?', (answer) => {
+        if (Number.isInteger(answer)) {
+            if (parseInt(answer) === price) {
+            console.log(`Bravo, le prix était ${price} !`)
+            resetGame(); 
+            }
+            tryCount++;
+            console.log(`C'est pas bon, il te reste ${10 - tryCount} essais`);
+            if (tryCount === 10) {
+                console.log(
+                `Dom-H, le prix était ${price} ! Tu feras mieux la prochaine fois ;-(`
+                );
+            }
         }
-        tryCount++;
-        return console.log(`C'est pas bon, il te reste ${10 - tryCount} essais`);
-        if (tryCount === 10) {
-            return console.log(
-            `Dom-H, le prix était ${price} ! Tu feras mieux la prochaine fois ;-(`
-            );
-        }
-    }
-    return console.log("Ce n'est pas un prix mais un mot D:");
+        return console.log("Ce n'est pas un prix mais un mot D:");
+    })
     
 })
 
@@ -69,7 +70,8 @@ async function main() {
                   console.log('Option invalide');
                   break;
           }
-       }
+          main();
+        }
 }
  
 main();
